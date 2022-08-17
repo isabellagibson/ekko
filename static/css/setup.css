@@ -1,0 +1,27 @@
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.logo-spin {
+    animation: spin 5.5s linear infinite;
+}
+
+.f-in {
+    animation: fadeIn 0.675s;
+}
