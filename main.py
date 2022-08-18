@@ -42,6 +42,9 @@ def get_temporary_token(client_id, client_secret, code, redirect_uri):
     open('.cache', 'w').write(json.dumps(req, indent=2))
     return req
 
+def read_html(filename):
+    return '\n'.join(open(f'templates/{filename}.html', 'r').readlines())
+
 ALL_IPS = []
 for iface in interfaces():
     for x in [inet['addr'] for inet in ifaddresses(iface).setdefault(AF_INET, [{'addr': 'N/A'}]) if inet['addr'] not in ['127.0.0.1', 'N/A']]:
@@ -85,7 +88,13 @@ templates = Jinja2Templates(directory="templates")
 @app.get('/')
 def index(request: fastapi.Request):
     if os.path.exists('config.json'):
-        return templates.TemplateResponse(name='index.html', context={'request': request})
+        return templates.TemplateResponse(name='template.html', context={'request': request, 'page_content': read_html('index'), 'page_title': 'Home'})
+    return RedirectResponse('/setup', 307)
+
+@app.get('/tags')
+def index(request: fastapi.Request):
+    if os.path.exists('config.json'):
+        return templates.TemplateResponse(name='template.html', context={'request': request, 'page_content': read_html('tags'), 'page_title': 'Tags'})
     return RedirectResponse('/setup', 307)
 
 @app.post('/config')
