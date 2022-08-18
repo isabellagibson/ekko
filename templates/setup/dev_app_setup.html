@@ -17,14 +17,36 @@
   <div class="col-lg-4 container d-flex justify-content-center align-items-center">
     <div class="card rounded-5 shadow-4-strong d-flex justify-content-center align-items-center" style="height: auto;">
       <div class="card-body">
-        <h3 class="card-title text-center">1) Creating a Spotify Developer App
+        <h3 class="card-title text-center" class="align-items-center justify-content-center">1) Creating a Spotify
+          Developer App <i class="fab fa-spotify" style="color: #1DB954;"></i>
         </h3>
         <hr class="hr hr-blurry" />
+        <ol>
+          <li>Head over to <a
+              href="https://developer.spotify.com/dashboard/">https://developer.spotify.com/dashboard/</a> and log in
+            with your Spotify account.</li>
+          <li>Once logged in, click the <code class="text-uppercase">Create An App</code> button and configure the app
+            as such:
+            <ul>
+              <li class="align-items-center justify-content-center">
+                <code>App name: </code>whatever you want, but we recommend <code>Ekko</code>
+              </li>
+              <li class="align-items-center justify-content-center">
+                <code>App description: </code>up to you!
+              </li>
+              <li class="align-items-center justify-content-center">
+                <code>Accept the TOS: </code>
+                <i class="fas fa-check-circle" style="color: #1DB954;"></i>
+              </li>
+            </ul>
+          </li>
+        </ol>
         <div class="text-center">
-          <p class="mb-3">Welcome to Ekko, the coolest way to add some flair to the way you enjoy your music. You'll be
-            walked through all of the nececessary steps to get up and running ASAP!</p>
-          <h5 class="mb-3">Go on, what are you waiting for? Press the button below to begin setup.</h5>
-          <button class="btn btn-primary btn-lg">Continue</button>
+          <p class="mb-3">Great! You should've been brought to the settings page for the app you've newly created. Click
+            Next below to continue.</p>
+          <hr class="hr" />
+          <button class="btn btn-primary btn-lg"
+            onclick="javascript:window.location.href = '/setup?page=dev_app_config'">Next</button>
         </div>
       </div>
     </div>

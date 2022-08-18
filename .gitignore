@@ -1,2 +1,3 @@
-__pycache/
 *.bat
+__pycache__/
+config.json

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Setup | Ekko</title>
+    <link rel="icon" href="/static/img/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <link rel="stylesheet" href="/static/css/mdb.min.css" />
+    <link rel="stylesheet" href="/static/css/setup.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function checkSetup() {
+            fetch(`${window.location.origin}/token`).then((tmp) => tmp.json()).then((response) => {
+                if (response.success === true) {
+                    window.location = '/';
+                } else {
+                    Swal.fire({
+                        allowOutsideClick: false,
+                        backdrop: false,
+                        icon: "error",
+                        title: "Uh oh!",
+                        html: `Error: <code>${response.error}</code>`,
+                        showClass: {
+                            popup: "swal2-show",
+                            backdrop: "swal2-backdrop-show",
+                            icon: "swal2-icon-show",
+                        },
+                        hideClass: {
+                            popup: "swal2-hide",
+                            backdrop: "swal2-backdrop-hide",
+                            icon: "swal2-icon-hide",
+                        },
+                    })
+                }
+            })
+        }
+    </script>
+</head>
+
+<body style="background-color: #d9d9d9; align-items: center; height: 100vh; display: flex;" class="f-in">
+    <div class="col-lg-4 container d-flex justify-content-center align-items-center">
+        <div class="card rounded-5 shadow-4-strong d-flex justify-content-center align-items-center"
+            style="height: auto;">
+            <div class="card-body">
+                <h3 class="card-title text-center" class="align-items-center justify-content-center">3) Authorizing Ekko
+                    <i class="fab fa-spotify" style="color: #1DB954;"></i>
+                </h3>
+                <hr class="hr hr-blurry" />
+                <ol>
+                    <li>Click <code><a href="{{ oauth_url }}" target="_blank">this</a></code> link</li>
+                    <li>Click Next to finish setup.</li>
+                </ol>
+                <hr class="hr" />
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg" onclick="checkSetup()">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="/static/js/mdb.min.js"></script>
+</body>
+
+</html>

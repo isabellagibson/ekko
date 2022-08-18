@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Setup | Ekko</title>
+    <link rel="icon" href="/static/img/favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+    <link rel="stylesheet" href="/static/css/mdb.min.css" />
+    <link rel="stylesheet" href="/static/css/setup.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function checkSetup() {
+            var clientId = document.querySelector('#clientId').value;
+            var clientSecret = document.querySelector('#clientSecret').value;
+            if (clientId === '' || clientSecret === '') {
+                Swal.fire({
+                    allowOutsideClick: false,
+                    backdrop: false,
+                    icon: "error",
+                    title: "Uh oh!",
+                    html: "In order to continue, please double check that both the <code>Client ID</code> & <code>Client Secret</code> fields are filled out.",
+                    showClass: {
+                        popup: "swal2-show",
+                        backdrop: "swal2-backdrop-show",
+                        icon: "swal2-icon-show",
+                    },
+                    hideClass: {
+                        popup: "swal2-hide",
+                        backdrop: "swal2-backdrop-hide",
+                        icon: "swal2-icon-hide",
+                    },
+                });
+            } else {
+                fetch(`${window.location.origin}/config`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        'client_id': clientId,
+                        'client_secret': clientSecret,
+                    })
+                }).then((tmp) => tmp.json())
+                    .then((response) => {
+                        if (response.success === true) {
+                            window.location.href = '/setup?page=spotify_oauth';
+                        }
+                    });
+            }
+        }
+    </script>
+</head>
+
+<body style="background-color: #d9d9d9; align-items: center; height: 100vh; display: flex;" class="f-in">
+    <div class="col-lg-4 container d-flex justify-content-center align-items-center">
+        <div class="card rounded-5 shadow-4-strong d-flex justify-content-center align-items-center"
+            style="height: auto;">
+            <div class="card-body">
+                <h3 class="card-title text-center" class="align-items-center justify-content-center">2) Configuring Ekko
+                </h3>
+                <hr class="hr hr-blurry" />
+                <ol>
+                    <li>Copy the app's <code>Client ID</code> from the application overview into the input below labeled
+                        "Client ID"</li>
+                    <li>Click the <code class="text-uppercase">Show Client Secret</code> button and copy+paste the value
+                        into the "Client Secret" field below</li>
+                    <li>Click <code class="text-uppercase"><i class="fas fa-cog"></i> Edit Settings</code> and edit the
+                        following settings:
+                        <ul>
+                            <code>Redirect URIs: </code><b><code>{{ redirect_uri }}</code></b>
+                            (click <code>Add</code> when done)
+                        </ul>
+                    </li>
+                    <li>Hit <code>Save</code></li>
+                </ol>
+                <hr class="hr" />
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-outline align-items-center justify-content-center">
+                            <input type="text" id="clientId" class="form-control" data-mdb-showcounter="true"
+                                maxlength="32" />
+                            <label class="form-label" for="clientId">Client ID</label>
+                            <div class="form-helper"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-outline align-items-center justify-content-center">
+                            <input type="text" id="clientSecret" class="form-control" data-mdb-showcounter="true"
+                                maxlength="32" />
+                            <label class="form-label" for="clientSecret">Client Secret</label>
+                            <div class="form-helper"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg" onclick="checkSetup()">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript" src="/static/js/mdb.min.js"></script>
+</body>
+
+</html>
