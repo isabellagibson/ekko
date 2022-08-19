@@ -1,18 +1,24 @@
+<script src="/static/js/tags.js"></script>
 <div id="content" class="mt-3">
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Tags</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                    class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <div class="d-none d-sm-inline-block">
+                <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm mr-2"
+                    data-toggle="modal" onclick="openCreateModal()">
+                    <i class="fas fa-plus fa-sm text-white-50"></i> Create</a>
+                </button>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                    <i class="fas fa-download fa-sm text-white-50"></i> Generate Art</a>
+            </div>
         </div>
         <div class="row">
-            <table class="table align-middle mb-0 bg-white">
+            <table class="table table-bordered align-middle mb-0 bg-white">
                 <thead class="bg-light">
                     <tr>
                         <th>Name</th>
-                        <th>Title</th>
-                        <th>Status</th>
-                        <th>Position</th>
+                        <th>Last Tapped</th>
+                        <th>Taps</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -21,81 +27,91 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
-                                    style="width: 45px; height: 45px" class="rounded-circle" />
+                                    style="width: 45px; height: 45px" class="rounded-circle mr-2" />
                                 <div class="ms-3">
                                     <p class="fw-bold mb-1">John Doe</p>
-                                    <p class="text-muted mb-0">john.doe@gmail.com</p>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <p class="fw-normal mb-1">Software engineer</p>
-                            <p class="text-muted mb-0">IT department</p>
+                            <p class="fw-normal mb-1 text-center">8/18/2022 @ 8:11 AM</p>
                         </td>
                         <td>
                             <span class="badge badge-success rounded-pill d-inline">Active</span>
                         </td>
-                        <td>Senior</td>
                         <td>
-                            <button type="button" class="btn btn-link btn-sm btn-rounded">
-                                Edit
-                            </button>
+                            N/A
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://mdbootstrap.com/img/new/avatars/6.jpg" class="rounded-circle" alt=""
-                                    style="width: 45px; height: 45px" />
+                                <img src="https://mdbootstrap.com/img/new/avatars/8.jpg" alt=""
+                                    style="width: 45px; height: 45px" class="rounded-circle mr-2" />
                                 <div class="ms-3">
-                                    <p class="fw-bold mb-1">Alex Ray</p>
-                                    <p class="text-muted mb-0">alex.ray@gmail.com</p>
+                                    <p class="fw-bold mb-1">John Doe</p>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <p class="fw-normal mb-1">Consultant</p>
-                            <p class="text-muted mb-0">Finance</p>
+                            <p class="fw-normal mb-1 text-center">8/18/2022 @ 8:11 AM</p>
                         </td>
                         <td>
-                            <span class="badge badge-primary rounded-pill d-inline">Onboarding</span>
-                        </td>
-                        <td>Junior</td>
-                        <td>
-                            <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold"
-                                data-mdb-ripple-color="dark">
-                                Edit
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://mdbootstrap.com/img/new/avatars/7.jpg" class="rounded-circle" alt=""
-                                    style="width: 45px; height: 45px" />
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1">Kate Hunington</p>
-                                    <p class="text-muted mb-0">kate.hunington@gmail.com</p>
-                                </div>
-                            </div>
+                            <span class="badge badge-success rounded-pill d-inline">Active</span>
                         </td>
                         <td>
-                            <p class="fw-normal mb-1">Designer</p>
-                            <p class="text-muted mb-0">UI/UX</p>
-                        </td>
-                        <td>
-                            <span class="badge badge-warning rounded-pill d-inline">Awaiting</span>
-                        </td>
-                        <td>Senior</td>
-                        <td>
-                            <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold"
-                                data-mdb-ripple-color="dark">
-                                Edit
-                            </button>
+                            N/A
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create an Ekko Tag <i
+                                class="fas fa-tag justify-content-center align-items-center"></i></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-2">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <div class="form-outline">
+                                    <input class="form-control text-center mb-2" id="tagID" type="text"
+                                        placeholder="Scan a tag to see the ID here" readonly disabled />
+                                    <input class="form-control" id="playlistURL" type="text"
+                                        placeholder="Playlist/Album URL" onchange="parseURL()" />
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="card mb-2 shadow-sm" id="itemCard">
+                                    <div class="bg-image">
+                                        <img class="img-fluid rounded-top" id="itemImg" />
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title text-center" id="itemName"></h5>
+                                        <p class="card-text" id="itemOwner"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="addTag()">Create</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

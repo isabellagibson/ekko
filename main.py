@@ -56,14 +56,15 @@ CONFIG = {
     'client_id': '',
     'client_secret': ''
 }
-if os.path.exists('config.json'):
-    CONFIG = json.load(open('config.json', 'r'))
 ip_addr = 'localhost'
 REDIRECT_URI = f'http://{ip_addr}:8000/callback'
 SCOPE = ['user-read-private', 'user-read-email', 'user-library-read']
 SPOTIPY_CLIENT = None
+if os.path.exists('config.json'):
+    CONFIG = json.load(open('config.json', 'r'))
+    SPOTIPY_CLIENT = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CONFIG['client_id'], client_secret=CONFIG['client_secret'], redirect_uri=REDIRECT_URI, scope=SCOPE))
 
-def check_ip():    
+def check_ip():
     for ip in ALL_IPS:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         result = sock.connect_ex((ip, 8000))
@@ -120,8 +121,17 @@ def callback(code: str = None):
     x = get_temporary_token(CONFIG['client_id'], CONFIG['client_secret'], code, REDIRECT_URI)
     return x
 
+@app.get('/{item_type}/{item_id}')
+def get_information(item_type: str, item_id: str):
+    global SPOTIPY_CLIENT
+    if item_type == 'album':
+        return SPOTIPY_CLIENT.album(item_id)
+    elif item_type == 'playlist':
+        return SPOTIPY_CLIENT.playlist(item_id)
+
 @app.get('/token')
 def retrieve_spotify_token():
+    global SPOTIPY_CLIENT
     SPOTIPY_CLIENT = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CONFIG['client_id'], client_secret=CONFIG['client_secret'], redirect_uri=REDIRECT_URI, scope=SCOPE, open_browser=True))
     return {'success': True, 'config': CONFIG, 'token': json.load(open('.cache', 'r'))}
 
