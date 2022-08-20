@@ -145,6 +145,8 @@ def read_tag():
 @app.post('/tags')
 def create_tag(body: JSONBody = None):
     global CONFIG
+    if 'tags' not in CONFIG:
+        CONFIG['tags'] = []
     body = jsonable_encoder(body)
     CONFIG['tags'].append(body)
     open('config.json', 'w').write(json.dumps(CONFIG, indent=2))
