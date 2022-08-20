@@ -169,7 +169,9 @@ def tag_reading_daemon():
     global LAST_TAPPED
     while True:
         if READER_BUSY:
+            print('Reader is currently busy, waiting...')
             continue
+        print('Reading tag')
         tag_id = read_rfid_tag()
         if tag_id:
             try:
