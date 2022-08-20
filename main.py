@@ -63,6 +63,7 @@ if os.path.exists('config.json'):
     CONFIG = json.load(open('config.json', 'r'))
     SPOTIPY_CLIENT = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CONFIG['client_id'], client_secret=CONFIG['client_secret'], redirect_uri=REDIRECT_URI, scope=SCOPE))
 READER_BUSY = False
+LAST_TAPPED = None
 
 def read_rfid_tag():
     global RFID_READER
@@ -77,8 +78,10 @@ def read_rfid_tag():
         READER_BUSY = False
     return tag_id
 
-def read_html(filename):
-    return '\n'.join(open(f'templates/{filename}.html', 'r').readlines())
+def read_html(filename: str = None, data: dict = None):
+    if not data:
+        return '\n'.join(open(f'templates/{filename}.html', 'r').readlines())
+    return Template('\n'.join(open(f'templates/{filename}.html', 'r').readlines())).render(data)
 
 app = FastAPI(docs_url=None, redoc_url=None)
 app.add_middleware(
@@ -92,7 +95,7 @@ templates = Jinja2Templates(directory="templates")
 @app.get('/')
 def index(request: fastapi.Request):
     if os.path.exists('config.json'):
-        return templates.TemplateResponse(name='template.html', context={'request': request, 'page_content': read_html('index'), 'num_tags': len(CONFIG['tags']), 'page_title': 'Home'})
+        return templates.TemplateResponse(name='template.html', context={'request': request, 'page_content': read_html('index', {'num_tags': len(CONFIG['tags'])}), 'page_title': 'Home'})
     return RedirectResponse('/setup', 307)
 
 @app.get('/tags')
@@ -163,12 +166,15 @@ def create_tag(body: JSONBody = None):
 def tag_reading_daemon():
     global READER_BUSY
     global SPOTIPY_CLIENT
+    global LAST_TAPPED
     while True:
         tag_id = read_rfid_tag()
         if tag_id:
             uri = [tag['uri'] for tag in CONFIG['tags'] if tag['tag_id'] == tag_id][0]
             print('Detected ' + uri)
-            SPOTIPY_CLIENT.start_playback(context_uri=uri)
+            if uri != LAST_TAPPED:
+                SPOTIPY_CLIENT.start_playback(context_uri=uri)
+                LAST_TAPPED = uri
         time.sleep(10)
 
 threading.Thread(target=tag_reading_daemon).start()
