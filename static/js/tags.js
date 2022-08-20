@@ -66,6 +66,9 @@ addTag = async () => {
         console.log(`Sending data: ${JSON.stringify(data)}`)
         const response = await fetch(`${window.location.origin}/tags`, {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(data)
         }).then((tmp) => tmp.json()).then((response) => { return response });
     };
