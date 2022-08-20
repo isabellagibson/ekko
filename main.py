@@ -48,7 +48,6 @@ for iface in interfaces():
         if x not in ALL_IPS:
             ALL_IPS.append(x)
 
-ALL_IPS.append('192.168.1.2')
 CONFIG = {
     'client_id': '',
     'client_secret': '',
@@ -67,11 +66,12 @@ LAST_TAPPED = None
 
 def read_rfid_tag():
     global RFID_READER
-    global READER_BUSY
     tag_id = None
+    print('Trying to read tag, please wait...')
     try:
         tag_id = str(RFID_READER.read()[0])
     finally:
+        print('Cleaning up...')
         GPIO.cleanup()
     return tag_id
 
