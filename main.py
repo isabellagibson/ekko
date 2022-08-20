@@ -22,7 +22,7 @@ from typing import Any, AnyStr, Optional, Union, List, Dict
 from mfrc522 import SimpleMFRC522
 import RPi.GPIO as GPIO
 
-GPIO.setwarnings(False)
+# GPIO.setwarnings(False)
 JSONBody = Union[List[Any], Dict[AnyStr, Any]]
 
 def get_temporary_token(client_id, client_secret, code, redirect_uri):
@@ -71,7 +71,7 @@ def read_rfid_tag():
     try:
         tag_raw = RFID_READER.read()
         print(tag_raw)
-        tag_id = str(RFID_READER.read()[0])
+        tag_id= str(RFID_READER.read()[0])
     except Exception as e:
         print('ERROR:', e)
     finally:
