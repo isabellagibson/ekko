@@ -69,8 +69,6 @@ def read_rfid_tag():
     global RFID_READER
     global READER_BUSY
     tag_id = None
-    if READER_BUSY:
-        return tag_id
     try:
         tag_id = str(RFID_READER.read()[0])
     finally:
@@ -151,7 +149,9 @@ def setup(request: fastapi.Request, page: str = None):
 def read_tag():
     global READER_BUSY
     READER_BUSY = True
-    return {'data': read_rfid_tag()}
+    return_data = {'data': read_rfid_tag()}
+    READER_BUSY = False
+    return return_data
 
 @app.post('/tags')
 def create_tag(body: JSONBody = None):
@@ -168,6 +168,8 @@ def tag_reading_daemon():
     global SPOTIPY_CLIENT
     global LAST_TAPPED
     while True:
+        if READER_BUSY:
+            continue
         tag_id = read_rfid_tag()
         if tag_id:
             uri = [tag['uri'] for tag in CONFIG['tags'] if tag['tag_id'] == tag_id][0]
@@ -175,6 +177,6 @@ def tag_reading_daemon():
             if uri != LAST_TAPPED:
                 SPOTIPY_CLIENT.start_playback(context_uri=uri)
                 LAST_TAPPED = uri
-        time.sleep(10)
+        time.sleep(2)
 
 threading.Thread(target=tag_reading_daemon).start()
