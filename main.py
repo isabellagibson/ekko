@@ -1,13 +1,8 @@
-# Base libraries
-import hashlib
 import json
-import uuid
-import random
 import fastapi
 import os
 from datetime import datetime
 from netifaces import interfaces, ifaddresses, AF_INET
-import socket
 import requests
 from urllib.parse import quote
 import base64
@@ -15,8 +10,6 @@ import time
 import math
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-
-# Libraries used for various API functions
 from fastapi import Body, FastAPI, Header, Path, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse, JSONResponse
@@ -76,16 +69,6 @@ def read_rfid_tag():
     finally:
         GPIO.cleanup()
     return tag_id
-
-def check_ip():
-    for ip in ALL_IPS:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex((ip, 8000))
-        if result == 0:
-            print('Port is opened')
-        else:
-            print('Port is closed', result)
-        sock.close()
 
 def read_html(filename):
     return '\n'.join(open(f'templates/{filename}.html', 'r').readlines())
