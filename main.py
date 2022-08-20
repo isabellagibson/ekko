@@ -61,14 +61,19 @@ RFID_READER = SimpleMFRC522()
 if os.path.exists('config.json'):
     CONFIG = json.load(open('config.json', 'r'))
     SPOTIPY_CLIENT = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CONFIG['client_id'], client_secret=CONFIG['client_secret'], redirect_uri=REDIRECT_URI, scope=SCOPE))
+READER_BUSY = False
 
 def read_rfid_tag():
     global RFID_READER
+    global READER_BUSY
     tag_id = None
+    if READER_BUSY:
+        return tag_id
     try:
         tag_id = str(RFID_READER.read()[0])
     finally:
         GPIO.cleanup()
+        READER_BUSY = False
     return tag_id
 
 def read_html(filename):
@@ -140,6 +145,8 @@ def setup(request: fastapi.Request, page: str = None):
 
 @app.get('/read_tag')
 def read_tag():
+    global READER_BUSY
+    READER_BUSY = True
     return {'data': read_rfid_tag()}
 
 @app.post('/tags')
@@ -151,3 +158,13 @@ def create_tag(body: JSONBody = None):
     CONFIG['tags'].append(body)
     open('config.json', 'w').write(json.dumps(CONFIG, indent=2))
     return {'success': True, 'data': body}
+
+def tag_reading_daemon():
+    global READER_BUSY
+    global SPOTIPY_CLIENT
+    while True:
+        tag_id = read_rfid_tag()
+        if tag_id:
+            uri = [tag['uri'] for tag in CONFIG['tags'] if tag['tag_id'] == tag_id][0]
+            print('Detected ' + uri)
+            SPOTIPY_CLIENT.start_playback(context_uri=uri)
