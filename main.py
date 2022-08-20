@@ -50,7 +50,8 @@ for iface in interfaces():
 ALL_IPS.append('192.168.1.2')
 CONFIG = {
     'client_id': '',
-    'client_secret': ''
+    'client_secret': '',
+    'tags': []
 }
 ip_addr = os.popen('hostname -I').read().strip()
 REDIRECT_URI = f'http://{ip_addr}:8000/callback'
@@ -65,10 +66,10 @@ def read_rfid_tag():
     global RFID_READER
     tag_id = None
     try:
-        tag_id = RFID_READER.read()[0]
+        tag_id = str(RFID_READER.read()[0])
     finally:
         GPIO.cleanup()
-    print(f'SCANNED TAG WITH ID {str(tag_id)}')
+    print(f'SCANNED TAG WITH ID {tag_id}')
     return tag_id
 
 def read_html(filename):
@@ -141,3 +142,9 @@ def setup(request: fastapi.Request, page: str = None):
 @app.get('/read_tag')
 def read_tag():
     return {'data': read_rfid_tag()}
+
+@app.post('/tags')
+def create_tag(body: JSONBody = None):
+    body = jsonable_encoder(body)
+    print(body)
+    return body

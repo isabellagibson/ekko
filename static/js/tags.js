@@ -64,7 +64,7 @@ addTag = async () => {
 }
 
 scanTag = async () => {
-    x = fetch(`${window.location.origin}/read_tag`)
+    x = await fetch(`${window.location.origin}/read_tag`)
         .then((tmp) => tmp.json())
         .then((response) => {
             return response;
