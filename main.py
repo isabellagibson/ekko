@@ -68,10 +68,10 @@ def read_rfid_tag():
     global RFID_READER
     tag_id = None
     print('Trying to read tag, please wait...')
+    tag_id = str(RFID_READER.read()[0])
+    print('Tag has been read')
     try:
-        tag_raw = RFID_READER.read()
-        print(tag_raw)
-        tag_id= str(RFID_READER.read()[0])
+        tag_id = str(RFID_READER.read()[0])
     except Exception as e:
         print('ERROR:', e)
     finally:
@@ -175,6 +175,7 @@ def tag_reading_daemon():
     while True:
         if READER_BUSY:
             print('Reader is currently busy, waiting...')
+            time.sleep(10)
             continue
         print('Reading tag')
         tag_id = read_rfid_tag()
