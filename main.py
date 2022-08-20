@@ -92,7 +92,7 @@ templates = Jinja2Templates(directory="templates")
 @app.get('/')
 def index(request: fastapi.Request):
     if os.path.exists('config.json'):
-        return templates.TemplateResponse(name='template.html', context={'request': request, 'page_content': read_html('index'), 'page_title': 'Home'})
+        return templates.TemplateResponse(name='template.html', context={'request': request, 'page_content': read_html('index'), 'num_tags': len(CONFIG['tags']), 'page_title': 'Home'})
     return RedirectResponse('/setup', 307)
 
 @app.get('/tags')
