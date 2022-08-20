@@ -73,7 +73,6 @@ def read_rfid_tag():
         tag_id = str(RFID_READER.read()[0])
     finally:
         GPIO.cleanup()
-        READER_BUSY = False
     return tag_id
 
 def read_html(filename: str = None, data: dict = None):
@@ -149,6 +148,7 @@ def setup(request: fastapi.Request, page: str = None):
 def read_tag():
     global READER_BUSY
     READER_BUSY = True
+    print('Reading tag @ /read_tag...')
     return_data = {'data': read_rfid_tag()}
     READER_BUSY = False
     return return_data
