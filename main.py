@@ -69,7 +69,6 @@ def read_rfid_tag():
         tag_id = str(RFID_READER.read()[0])
     finally:
         GPIO.cleanup()
-    print(f'SCANNED TAG WITH ID {tag_id}')
     return tag_id
 
 def read_html(filename):
@@ -145,6 +144,8 @@ def read_tag():
 
 @app.post('/tags')
 def create_tag(body: JSONBody = None):
+    global CONFIG
     body = jsonable_encoder(body)
-    print(body)
+    CONFIG['tags'].append(body)
+    open('config.json', 'w').write(json.dumps(CONFIG, indent=2))
     return body

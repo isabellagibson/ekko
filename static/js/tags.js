@@ -59,8 +59,14 @@ addTag = async () => {
             $('#createModal').modal('show');
         });
     } else {
-        console.log('TODO: Add Tag');
-    }
+        const response = await fetch(`${window.location.origin}/tags`, {
+            method: "POST",
+            body: JSON.stringify({
+                uri: uri,
+                tag_id: document.querySelector('#tagID').value
+            })
+        }).then((tmp) => tmp.json()).then((response) => { return response });
+    };
 }
 
 scanTag = async () => {
