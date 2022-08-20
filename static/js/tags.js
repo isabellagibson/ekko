@@ -62,3 +62,13 @@ addTag = async () => {
         console.log('TODO: Add Tag');
     }
 }
+
+scanTag = async () => {
+    x = fetch(`${this.baseURL}/read_tag`)
+        .then((tmp) => tmp.json())
+        .then((response) => {
+            return response;
+        });
+    console.log(x);
+    document.querySelector('#tagID').value = x.data;
+}
