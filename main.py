@@ -171,6 +171,7 @@ def tag_reading_daemon():
     global READER_BUSY
     global SPOTIPY_CLIENT
     global LAST_TAPPED
+    time.sleep(60)
     while True:
         if READER_BUSY:
             print('Reader is currently busy, waiting...')
