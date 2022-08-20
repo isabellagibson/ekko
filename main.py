@@ -69,6 +69,8 @@ def read_rfid_tag():
     tag_id = None
     print('Trying to read tag, please wait...')
     try:
+        tag_raw = RFID_READER.read()
+        print(tag_raw)
         tag_id = str(RFID_READER.read()[0])
     except Exception as e:
         print('ERROR:', e)
