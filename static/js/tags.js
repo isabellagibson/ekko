@@ -16,7 +16,7 @@ parseURL = async () => {
     const url = document.querySelector('#playlistURL').value.split('://')[1].split('?')[0];
     const item_type = url.split('.com/')[1].split('/')[0];
     const item_id = url.split(`${item_type}/`)[1];
-    uri = 'spotify: ' + item_type + ':' + item_id;
+    uri = 'spotify:' + item_type + ':' + item_id;
     const result = await ekko.getItem(item_type, item_id);
     // Set card info
     let curImg = undefined;
@@ -59,12 +59,14 @@ addTag = async () => {
             $('#createModal').modal('show');
         });
     } else {
+        let data = {
+            uri: uri,
+            tag_id: document.querySelector('#tagID').value
+        };
+        console.log(`Sending data: ${JSON.stringify(data)}`)
         const response = await fetch(`${window.location.origin}/tags`, {
             method: "POST",
-            body: JSON.stringify({
-                uri: uri,
-                tag_id: document.querySelector('#tagID').value
-            })
+            body: JSON.stringify(data)
         }).then((tmp) => tmp.json()).then((response) => { return response });
     };
 }
