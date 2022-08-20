@@ -70,6 +70,8 @@ def read_rfid_tag():
     print('Trying to read tag, please wait...')
     try:
         tag_id = str(RFID_READER.read()[0])
+    except Exception as e:
+        print('ERROR:', e)
     finally:
         print('Cleaning up...')
         GPIO.cleanup()
