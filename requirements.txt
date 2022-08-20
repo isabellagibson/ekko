@@ -1,2 +1,4 @@
 netifaces == 0.11.0
 spotipy == 2.20.0
+spidev == 3.5
+mfrc522 == 0.0.7

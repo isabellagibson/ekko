@@ -25,7 +25,10 @@ from fastapi.templating import Jinja2Templates
 from fastapi.encoders import jsonable_encoder
 from jinja2 import Template
 from typing import Any, AnyStr, Optional, Union, List, Dict
+from mfrc522 import SimpleMFRC522
+import RPi.GPIO as GPIO
 
+GPIO.setwarnings(False)
 JSONBody = Union[List[Any], Dict[AnyStr, Any]]
 
 def get_temporary_token(client_id, client_secret, code, redirect_uri):
@@ -56,13 +59,23 @@ CONFIG = {
     'client_id': '',
     'client_secret': ''
 }
-ip_addr = 'localhost'
+ip_addr = os.popen('hostname -I').read().strip()
 REDIRECT_URI = f'http://{ip_addr}:8000/callback'
 SCOPE = ['user-read-private', 'user-read-email', 'user-library-read']
 SPOTIPY_CLIENT = None
+RFID_READER = SimpleMFRC522()
 if os.path.exists('config.json'):
     CONFIG = json.load(open('config.json', 'r'))
     SPOTIPY_CLIENT = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=CONFIG['client_id'], client_secret=CONFIG['client_secret'], redirect_uri=REDIRECT_URI, scope=SCOPE))
+
+def read_rfid_tag():
+    global RFID_READER
+    tag_id = None
+    try:
+        tag_id = RFID_READER.read()
+    finally:
+        GPIO.cleanup()
+    return tag_id
 
 def check_ip():
     for ip in ALL_IPS:
@@ -141,6 +154,6 @@ def setup(request: fastapi.Request, page: str = None):
         return templates.TemplateResponse(name='setup/intro.html', context={'request': request})
     return templates.TemplateResponse(name=f'setup/{page}.html', context={'request': request, 'ip_addr': 'ip_addr', 'redirect_uri': REDIRECT_URI, 'oauth_url': f'https://accounts.spotify.com/authorize?response_type=code&client_id={CONFIG["client_id"]}&scope={" ".join(SCOPE)}&redirect_uri={REDIRECT_URI}&state=ekko'})
 
-@app.get('/test')
-def test():
-    check_ip()
+@app.get('/read_tag')
+def read_tag():
+    return {'data': read_rfid_tag()}
