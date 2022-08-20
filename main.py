@@ -169,5 +169,6 @@ def tag_reading_daemon():
             uri = [tag['uri'] for tag in CONFIG['tags'] if tag['tag_id'] == tag_id][0]
             print('Detected ' + uri)
             SPOTIPY_CLIENT.start_playback(context_uri=uri)
+        time.sleep(10)
 
 threading.Thread(target=tag_reading_daemon).start()
