@@ -71,6 +71,19 @@ addTag = async () => {
             },
             body: JSON.stringify(data)
         }).then((tmp) => tmp.json()).then((response) => { return response });
+        if (response.success === true) {
+            $('#createModal').modal('hide');
+            Swal.fire({
+                backdrop: true,
+                icon: "success",
+                title: "Done!",
+                text: "A tag has been successfully created.",
+                timer: 3000,
+                timerProgressBar: true
+            }).then(() => {
+                window.location.reload();
+            })
+        }
     };
 }
 

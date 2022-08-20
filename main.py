@@ -55,7 +55,7 @@ CONFIG = {
 }
 ip_addr = os.popen('hostname -I').read().strip()
 REDIRECT_URI = f'http://{ip_addr}:8000/callback'
-SCOPE = ['user-read-private', 'user-read-email', 'user-library-read']
+SCOPE = ['user-library-read', 'user-modify-playback-state', 'user-read-playback-state', 'user-read-currently-playing', 'user-follow-modify', 'user-follow-read', 'user-read-recently-played', 'user-read-playback-position', 'user-top-read', 'playlist-read-collaborative', 'playlist-modify-public', 'playlist-read-private', 'playlist-modify-private', 'app-remote-control', 'streaming', 'user-read-email', 'user-read-private', 'user-library-modify', 'user-library-read']
 SPOTIPY_CLIENT = None
 RFID_READER = SimpleMFRC522()
 if os.path.exists('config.json'):
@@ -150,4 +150,4 @@ def create_tag(body: JSONBody = None):
     body = jsonable_encoder(body)
     CONFIG['tags'].append(body)
     open('config.json', 'w').write(json.dumps(CONFIG, indent=2))
-    return body
+    return {'success': True, 'data': body}
