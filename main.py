@@ -65,9 +65,10 @@ def read_rfid_tag():
     global RFID_READER
     tag_id = None
     try:
-        tag_id = RFID_READER.read()
+        tag_id = RFID_READER.read()[0]
     finally:
         GPIO.cleanup()
+    print(f'SCANNED TAG WITH ID {str(tag_id)}')
     return tag_id
 
 def read_html(filename):
