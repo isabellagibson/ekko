@@ -172,11 +172,14 @@ def tag_reading_daemon():
             continue
         tag_id = read_rfid_tag()
         if tag_id:
-            uri = [tag['uri'] for tag in CONFIG['tags'] if tag['tag_id'] == tag_id][0]
-            print('Detected ' + uri)
-            if uri != LAST_TAPPED:
-                SPOTIPY_CLIENT.start_playback(context_uri=uri)
-                LAST_TAPPED = uri
-        time.sleep(2)
+            try:
+                uri = [tag['uri'] for tag in CONFIG['tags'] if tag['tag_id'] == tag_id][0]
+                print('Detected ' + uri)
+                if uri != LAST_TAPPED:
+                    SPOTIPY_CLIENT.start_playback(context_uri=uri)
+                    LAST_TAPPED = uri
+            except:
+                pass
+        time.sleep(5)
 
 threading.Thread(target=tag_reading_daemon).start()
